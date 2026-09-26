@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Página não encontrada | WiSync</title>
+  <meta name="description" content="Página não encontrada.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#050D17">
+  <link rel="icon" href="/WiSync/assets/wisync-icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/WiSync/css/style.css?v=1.0">
+</head>
+<body>
+<header class="header">
+  <div class="container header__inner">
+    <a href="/WiSync/" class="brand" aria-label="WiSync — início"><img src="/WiSync/assets/wisync-icon.svg" alt="" width="40" height="41"><span>WiSync</span></a>
+    <a href="/WiSync/#contacto" class="btn btn--glow btn--sm">Falar connosco</a>
+  </div>
+</header>
+
+<main class="section page notfound">
+ <div class="container">
+  <div class="logo-anim"><img src="/WiSync/assets/wisync-icon.svg" alt=""></div>
+  <span class="eyebrow">Erro 404</span>
+  <h1>Esta página não existe</h1>
+  <p>O link pode estar errado ou a página mudou de lugar. Vamos organizar isso.</p>
+  <div class="hero__cta" style="justify-content:center">
+    <a href="/WiSync/" class="btn btn--primary">Ir para o início</a>
+    <a href="/WiSync/#contacto" class="btn btn--outline">Falar connosco</a>
+  </div>
+ </div>
+</main>
+<footer class="footer" style="padding-top:0">
+  <div class="container footer__bottom" style="margin-top:0">
+    <span>© <span id="ano"></span> WiSync</span>
+    <span><a href="/WiSync/privacidade.html">Privacidade</a> · <a href="/WiSync/termos.html">Termos</a></span>
+  </div>
+</footer>
+<script src="/WiSync/js/config.js?v=1.0"></script>
+<script>
+(function(){var c=window.WISYNC&&WISYNC.contactos;document.getElementById("ano").textContent=new Date().getFullYear();if(!c)return;
+document.querySelectorAll("[data-c]").forEach(function(el){var k=el.getAttribute("data-c");
+if(k==="email"){el.textContent=c.email;el.href="mailto:"+c.email}
+else if(k==="tel"){el.textContent=c.telefones.join(" / ")}
+else if(k==="morada"){el.textContent=c.morada}
+else if(k==="wa"){el.href="https://wa.me/"+c.whatsapp}});})();
+</script>
+</body>
+</html>
