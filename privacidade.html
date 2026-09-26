@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Política de Privacidade | WiSync</title>
+  <meta name="description" content="Como a WiSync recolhe, usa e protege os seus dados pessoais.">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#050D17">
+  <link rel="icon" href="assets/wisync-icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=1.0">
+</head>
+<body>
+<header class="header">
+  <div class="container header__inner">
+    <a href="./" class="brand" aria-label="WiSync — início"><img src="assets/wisync-icon.svg" alt="" width="40" height="41"><span>WiSync</span></a>
+    <a href="./#contacto" class="btn btn--glow btn--sm">Falar connosco</a>
+  </div>
+</header>
+
+<main class="section page legal">
+ <div class="container">
+  <span class="eyebrow">Legal</span>
+  <h1>Política de Privacidade</h1>
+  <p>Última actualização: <time datetime="2026-09-26">26 de Setembro de 2026</time></p>
+  <div class="legal__note"><strong>Modelo para revisão.</strong> Este texto é uma base preparada para a WiSync. Antes de o considerar definitivo, deve ser revisto por um jurista e completado com os dados de registo da empresa (NUIT e registo comercial).</div>
+
+  <h2>1. Quem somos</h2>
+  <p>A <strong>WiSync</strong>, com sede em <span data-c="morada">Maputo, Moçambique</span>, presta serviços de consultoria empresarial, criação de sistemas e formação profissional, e é responsável pelos dados recolhidos neste site. NUIT: <em>[a preencher]</em>.</p>
+  <h2>2. Que dados recolhemos</h2>
+  <ul>
+    <li><strong>No formulário de contacto:</strong> nome, empresa, telefone, email, serviço de interesse e a mensagem que escrever.</li>
+    <li><strong>No diagnóstico rápido:</strong> as opções que marca são avaliadas no seu próprio aparelho e só nos chegam se decidir enviá-las.</li>
+    <li><strong>Medição de visitas:</strong> dados técnicos anónimos (página, tipo de aparelho, país), sem cookies e sem identificar a pessoa.</li>
+  </ul>
+  <h2>3. Para que usamos os dados</h2>
+  <ul>
+    <li>Responder ao seu pedido e preparar propostas;</li>
+    <li>Organizar formações e emitir certificados de participação;</li>
+    <li>Prestar os serviços contratados e o respectivo acompanhamento;</li>
+    <li>Melhorar o site, com base em estatísticas anónimas.</li>
+  </ul>
+  <p>Tratamos os seus dados com o seu consentimento, dado no formulário, ou quando for necessário para executar um contrato ou cumprir a lei.</p>
+  <h2>4. Como os dados chegam até nós</h2>
+  <p>O formulário não guarda dados neste site: ao enviar, abre o WhatsApp ou o seu programa de email com a mensagem já escrita, e é você quem decide enviá-la. Esses serviços têm as suas próprias políticas de privacidade.</p>
+  <h2>5. Dados dos nossos clientes</h2>
+  <p>Nos projectos de consultoria, sistemas e IA, os dados da empresa cliente são tratados apenas para o fim contratado, com confidencialidade, e nunca são usados para outros fins nem partilhados sem autorização.</p>
+  <h2>6. Partilha</h2>
+  <p>Não vendemos nem alugamos dados. Só os partilhamos quando necessário para prestar o serviço, por exigência legal, ou com prestadores que trabalham para nós sob dever de confidencialidade.</p>
+  <h2>7. Conservação</h2>
+  <p>Guardamos os dados de contactos apenas pelo tempo necessário para responder e, no caso de clientes, enquanto durar a relação e pelo prazo exigido por lei.</p>
+  <h2>8. Os seus direitos</h2>
+  <p>Pode pedir, a qualquer momento, para consultar, corrigir ou apagar os seus dados, ou retirar o consentimento.</p>
+  <h2>9. Contactos</h2>
+  <p>Email: <a data-c="email" href="#">—</a> · Telefone: <span data-c="tel">—</span> · <a data-c="wa" href="#" target="_blank" rel="noopener">WhatsApp</a></p>
+
+  <p><a href="./" class="btn btn--primary">Voltar ao site</a></p>
+ </div>
+</main>
+<footer class="footer" style="padding-top:0">
+  <div class="container footer__bottom" style="margin-top:0">
+    <span>© <span id="ano"></span> WiSync</span>
+    <span><a href="privacidade.html">Privacidade</a> · <a href="termos.html">Termos</a></span>
+  </div>
+</footer>
+<script src="js/config.js?v=1.0"></script>
+<script>
+(function(){var c=window.WISYNC&&WISYNC.contactos;document.getElementById("ano").textContent=new Date().getFullYear();if(!c)return;
+document.querySelectorAll("[data-c]").forEach(function(el){var k=el.getAttribute("data-c");
+if(k==="email"){el.textContent=c.email;el.href="mailto:"+c.email}
+else if(k==="tel"){el.textContent=c.telefones.join(" / ")}
+else if(k==="morada"){el.textContent=c.morada}
+else if(k==="wa"){el.href="https://wa.me/"+c.whatsapp}});})();
+</script>
+</body>
+</html>
