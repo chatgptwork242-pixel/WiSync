@@ -58,40 +58,55 @@
     });
   });
 
-  /* ---------- Diagnóstico rápido ---------- */
-  var RECS = {
-    none: ["—", 0, "Marque as opções ao lado", "Vamos sugerir o ponto de partida mais adequado para a sua empresa.", "Diagnóstico da empresa"],
-    proc: ["Nível 1", 20, "Comece pela consultoria de processos", "O primeiro passo é mapear como a empresa trabalha e escrever procedimentos claros. Sem isso, qualquer sistema vai herdar a desorganização.", "Consultoria empresarial"],
-    dig: ["Nível 1", 30, "Digitalize pedidos e aprovações", "Formulários e fluxos digitais acabam com o WhatsApp e o papel, e criam histórico. É uma melhoria rápida e de baixo custo.", "Criação de sistemas"],
-    form: ["Nível 1", 25, "Invista na formação da equipa", "Uma formação prática em Excel e Office costuma libertar horas por semana a cada colaborador, com as ferramentas que já têm.", "Formação: Excel"],
-    auto: ["Nível 2", 45, "Automatize relatórios e tarefas repetitivas", "Os seus processos já existem, mas consomem tempo. Relatórios automáticos e integração de ficheiros dão ganhos imediatos.", "Criação de sistemas"],
-    data: ["Nível 3", 60, "Organize os dados e crie indicadores", "Juntar a informação numa base única e criar dashboards dá à direcção controlo em tempo real sobre o negócio.", "Criação de sistemas"],
-    ai: ["Nível 4", 85, "Está pronto para a Inteligência Artificial", "Com processos e dados organizados, assistentes de IA podem analisar, resumir e apoiar decisões no dia-a-dia.", "Inteligência Artificial para a empresa"]
+  /* ---------- Diagnóstico rápido → diagnóstico preliminar ---------- */
+  var PROD = {
+    proc: ["WiSync Process", "Mapear processos, escrever procedimentos e definir responsabilidades."],
+    plan: ["Diagnóstico empresarial e Business Plan", "Clarificar a estratégia, os números e as prioridades antes de investir."],
+    dig: ["WiSync Flow", "Digitalizar pedidos, aprovações e registos com formulários e fluxos."],
+    auto: ["WiSync Flow", "Automatizar relatórios e tarefas repetitivas."],
+    form: ["Formação da equipa", "Formação prática em Excel e Office com os processos reais da empresa."],
+    data: ["WiSync Data", "Juntar a informação numa base única e criar indicadores para a direcção."],
+    ai: ["WiSync AI", "Assistentes de IA que analisam, resumem e apoiam decisões."]
   };
+  var ORDER = ["plan", "proc", "dig", "form", "auto", "data", "ai"];
+  var LADDER = ["WiSync Process", "WiSync Flow", "WiSync Data", "WiSync AI"];
   var box = $("#diagChecks");
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function diag() {
-    var v = $$("input:checked", box).map(function (i) { return i.value; });
-    var order = ["proc", "dig", "form", "auto", "data", "ai"], key = "none";
-    if (v.length) {
-      if (v.indexOf("ai") > -1 && v.length === 1) key = "ai";
-      else for (var i = 0; i < order.length; i++) { if (v.indexOf(order[i]) > -1 && order[i] !== "ai") { key = order[i]; break; } }
+    var sel = $$("input:checked", box), keys = sel.map(function (i) { return i.value; });
+    var probs = sel.filter(function (i) { return i.value !== "ai"; }).map(function (i) { return i.dataset.label; });
+    var lvl, pct, start, next;
+    if (!sel.length) { lvl = "—"; pct = 0; }
+    else if (!probs.length) { lvl = "Pronta para IA"; pct = 90; }
+    else if (probs.length >= 5) { lvl = "Inicial"; pct = 18; }
+    else if (probs.length >= 3) { lvl = "Em organização"; pct = 38; }
+    else { lvl = "Em crescimento"; pct = 62; }
+    $("#diagLvl").textContent = lvl;
+    $("#diagBar").style.width = pct + "%";
+    var body = $("#diagBody"), cta = $("#diagCta");
+    if (!sel.length) {
+      body.innerHTML = "<p>Marque as opções ao lado para ver o diagnóstico.</p>";
+      cta.dataset.msg = ""; return;
     }
-    var r = RECS[key];
-    $("#diagLvl").textContent = r[0];
-    $("#diagBar").style.width = r[1] + "%";
-    $("#diagTitle").textContent = r[2];
-    $("#diagText").textContent = r[3] + (v.length > 1 ? " Depois, avançamos para os restantes pontos que marcou." : "");
-    var cta = $("#diagCta");
-    cta.dataset.servico = r[4];
-    cta.dataset.msg = v.length ? "Fiz o diagnóstico no site. Recomendação: " + r[2] + ". Pontos marcados: " +
-      $$("input:checked", box).map(function (i) { return i.parentNode.textContent.trim(); }).join(" | ") : "";
+    for (var i = 0; i < ORDER.length; i++) if (keys.indexOf(ORDER[i]) > -1) { start = PROD[ORDER[i]]; break; }
+    var li = LADDER.indexOf(start[0]);
+    next = li > -1 && li < LADDER.length - 1 ? LADDER[li + 1] : (start[0] === "WiSync AI" ? "Acompanhamento contínuo" : "WiSync Process");
+    var h = "";
+    if (probs.length) h += "<p class=\"result__k\">Principais problemas identificados</p><ul class=\"result__list\">" + probs.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>";
+    h += "<p class=\"result__k\">Ponto de partida recomendado</p><p class=\"result__start\"><b>" + start[0] + "</b> — " + start[1] + "</p>";
+    h += "<p class=\"result__k\">Etapa seguinte</p><p class=\"result__next\">" + next + "</p>";
+    body.innerHTML = h;
+    cta.dataset.msg = "Diagnóstico preliminar feito no site.\nMaturidade: " + lvl +
+      (probs.length ? "\nProblemas: " + probs.join("; ") : "") +
+      "\nPonto de partida recomendado: " + start[0] + "\nEtapa seguinte: " + next +
+      "\n\nGostaria de agendar o diagnóstico completo.";
   }
   if (box) {
     box.addEventListener("change", diag);
     $("#diagCta").addEventListener("click", function () {
-      var sel = $("#servico"), m = $("#mensagem"), d = this.dataset;
-      if (sel && d.servico) sel.value = d.servico;
-      if (m && d.msg) m.value = d.msg;
+      var s = $("#servico"), m = $("#mensagem");
+      if (s) s.value = "Diagnóstico empresarial completo";
+      if (m && this.dataset.msg) m.value = this.dataset.msg;
     });
   }
 
@@ -119,24 +134,62 @@
     });
   }
 
-  /* ---------- Conversa do caso prático (aparece ao chegar) ---------- */
-  var msgs = $$("#chat .msg");
-  function playChat() { msgs.forEach(function (m, i) { setTimeout(function () { m.classList.add("show"); }, reduce ? 0 : i * 900); }); }
+  /* ---------- Casos práticos: separadores e conversa animada ---------- */
+  function playChat(panel) {
+    $$(".msg", panel).forEach(function (m, i) {
+      m.classList.remove("show");
+      setTimeout(function () { m.classList.add("show"); }, reduce ? 0 : 150 + i * 800);
+    });
+  }
+  var tabs = $$(".tabs [role=tab]");
+  tabs.forEach(function (t) {
+    t.addEventListener("click", function () {
+      tabs.forEach(function (x) {
+        var on = x === t, p = document.getElementById(x.getAttribute("aria-controls"));
+        x.setAttribute("aria-selected", on); p.hidden = !on;
+        if (on) playChat(p);
+      });
+    });
+  });
+
+  /* ---------- Projectos reais (só aparecem se existirem em config.js) ---------- */
+  var PJ = W.projectos || [], pl = $("#projList");
+  if (pl && PJ.length) {
+    pl.innerHTML = PJ.map(function (p) {
+      return '<article class="project"><span class="course__tag">' + esc(p.area || "Projecto") + "</span><h3>" + esc(p.titulo) + "</h3>" +
+        (p.situacao ? "<p><b>Situação inicial:</b> " + esc(p.situacao) + "</p>" : "") +
+        (p.solucao ? "<p><b>Solução:</b> " + esc(p.solucao) + "</p>" : "") +
+        (p.resultado ? '<p class="project__res"><b>Resultado:</b> ' + esc(p.resultado) + "</p>" : "") + "</article>";
+    }).join("");
+    $("#projectos").hidden = false;
+  }
+
+  /* ---------- Dados institucionais (só os preenchidos) ---------- */
+  var L = W.legal || {}, fi = $("#footerInst");
+  if (fi) {
+    var it = [];
+    if (L.razaoSocial) it.push("<li>" + esc(L.razaoSocial) + "</li>");
+    if (L.nuit) it.push("<li>NUIT: " + esc(L.nuit) + "</li>");
+    if (L.registoComercial) it.push("<li>" + esc(L.registoComercial) + "</li>");
+    if (L.moradaCompleta) it.push("<li>" + esc(L.moradaCompleta) + "</li>");
+    else if (ct.morada) it.push("<li>" + esc(ct.morada) + "</li>");
+    if (it.length) fi.innerHTML = it.join("");
+  }
 
   /* ---------- Animações ao descer ---------- */
   if ("IntersectionObserver" in window && !reduce) {
     var io = new IntersectionObserver(function (ents) {
       ents.forEach(function (en) {
         if (!en.isIntersecting) return;
-        if (en.target.id === "chat") playChat(); else en.target.classList.add("is-in");
+        if (en.target.id === "case-cont") playChat(en.target); else en.target.classList.add("is-in");
         io.unobserve(en.target);
       });
     }, { threshold: 0.15 });
-    $$(".section__head, .pain, .service, .step, .prod, .course, .level, .values div, .faq details, .check").forEach(function (t, i) {
+    $$(".section__head, .pain, .service, .bp__card, .step, .prod, .course, .level, .values div, .faq details, .check, .project").forEach(function (t, i) {
       t.classList.add("reveal"); t.style.transitionDelay = (i % 4) * 70 + "ms"; io.observe(t);
     });
-    var ch = $("#chat"); if (ch) io.observe(ch);
-  } else playChat();
+    var ch = $("#case-cont"); if (ch) io.observe(ch);
+  } else $$(".case .msg").forEach(function (m) { m.classList.add("show"); });
 
   /* ---------- Medição de visitas (GoatCounter, sem cookies) ---------- */
   function track(name) { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: name, title: name, event: true }); }
